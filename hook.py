@@ -8,39 +8,18 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
 
+	os.chdir( 'GIT_REPO_FOLDER' )
 
-	#logger = logging.getLogger(__name__)
-	#logger.setLevel(logging.INFO)
-
-	# create a file handler
-
-	#handler = logging.FileHandler('/tmp/BitbucketResponse.log')
-	#handler.setLevel(logging.INFO)
-
-	# create a logging format
-
-	#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-	#handler.setFormatter(formatter)
-
-	# add the handlers to the logger
-
-	#logger.addHandler(handler)
-
-	#print subprocess.call(['pwd'])
-	subprocess.call(["whoami"])
-	subprocess.call(["cat" ,"/var/www/.ssh/www-data.pub"])
-	os.chdir( '/home/ubuntu/apps/dietray-app/dietray-flask-app' )
-	#print subprocess.call(['pwd'])
-	#print subprocess.call(['whoami'])
 	output = subprocess.check_output(["git", "pull"])
 	
+	# if you are deploying another Python app , you should reload it on code changes using uwsgi touch reload functionality
 	subprocess.call(["touch","README.md"])
-	return output
+	 return '{message: '+output+' , success:True}'
     
 
 @app.route('/')
 def index():
-    return '{message: Dietray CI Server!, success:True}'
+    return '{message: Project CI Server!, success:True}'
 
 
 if __name__ == '__main__':
